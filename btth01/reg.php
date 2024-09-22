@@ -19,18 +19,27 @@ $message = '';
 
 // Kiểm tra xem form đã được gửi hay chưa
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_name = $_POST['user_name'];
-    $password = $_POST['password'];
-    $sql = "SELECT * from users where user_name = '$user_name' and password = '$password'";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-        // Đăng nhập thành công
-        $message = "Login successful!";
-        header('location:index1.php');
+    $user_name = mysqli_real_escape_string($conn, $_POST['user_name']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    
+    // Kiểm tra xem tên người dùng đã tồn tại hay chưa
+    $check_query = "SELECT * FROM users WHERE user_name = '$user_name'";
+    $check_result = mysqli_query($conn, $check_query);
+    
+    if (mysqli_num_rows($check_result) > 0) {
+        $message = "Tên người dùng đã tồn tại!";
     } else {
-        // Đăng nhập thất bại
-        $message = "Login failed. Please check your credentials.";
+        // Băm mật khẩu trước khi lưu vào cơ sở dữ liệu
+       
+        // Thêm dữ liệu vào cơ sở dữ liệu với INSERT IGNORE
+        $insert_query = "INSERT IGNORE INTO users (user_name, password) VALUES ('$user_name', '$password')";
+        
+        // Thực thi truy vấn
+        if (mysqli_query($conn, $insert_query)) {
+            $message = "Đăng ký tài khoản thành công!";
+        } else {
+            $message = "Đăng ký tài khoản thất bại. Vui lòng thử lại.";
+        }
     }
 }
 ?>
@@ -51,17 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="./">Trang chủ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="./login.php">Đăng nhập</a>
-                        </li>
+                        
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Nội dung cần tìm" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Tìm</button>
-                    </form>
+                    
                 </div>
             </div>
         </nav>
@@ -71,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="d-flex justify-content-center h-100">
             <div class="card">
                 <div class="card-header">
-                    <h3>Đăng Nhập</h3>
+                    <h3>Đăng ký</h3>
                     <div class="d-flex justify-content-end social_icon">
                         <span><i class="fab fa-facebook-square"></i></span>
                         <span><i class="fab fa-google-plus-square"></i></span>
@@ -93,17 +94,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="password" class="form-control" name="password" placeholder="Mật khẩu" required>
                         </div>
 
-                        <div class="row align-items-center remember">
-                            <input type="checkbox">Nhớ mật khẩu
-                        </div>
+                        
                         <div class="form-group">
-                            <input type="submit" value="Đăng Nhập" class="btn float-end login_btn">
+                            <input type="submit" value="Đăng ký" class="btn float-end login_btn">
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center ">
-                        Bạn chưa có tài khoản?<a href="reg.php" class="text-warning text-decoration-none">Đăng ký</a>
+                        Bạn đã có tài khoản?<a href="login.php" class="text-warning text-decoration-none">Đăng nhập</a>
                     </div>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="text-warning text-decoration-none">Quên mật khẩu?</a>
