@@ -72,7 +72,7 @@ $result = $conn->query($sql);
                     </tbody>
                     <?php
         if ($result) {
-            if ($result->num_rows > 0) {
+            if ($result->num_rows >= 0) {
                 // Biến đếm cho cột #
                 
 
@@ -82,10 +82,8 @@ $result = $conn->query($sql);
                     echo '<td>' . $row["ma_tloai"] . '</td>'; // Cột #
                     echo '<td>' . htmlspecialchars($row["ten_tloai"]) . '</td>'; // Tiêu đề
                     
-                    echo '<td><i class="fa-solid fa-pen-to-square"> </i></a></td>'; // Sửa
-                    echo ' <td>
-                            <i class="fa-solid fa-trash"></i></a>
-                            </td>'; // Xóa
+                    echo '<td><a href="edit_category.php?id='  . $row["ma_tloai"] . '"><i class="fa-solid fa-pen-to-square"> </i></a></td>';
+                    echo ' <td><a href="delete_category.php?id='  . $row["ma_tloai"] . '"><i class="fa-solid fa-trash"></i></a></td>'; // Xóa
                     echo '</tr>';
                 }
             } else {

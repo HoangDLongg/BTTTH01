@@ -1,3 +1,26 @@
+<?php 
+include 'C:/xampp/htdocs/btth01/admin/db.php';
+
+$theloai_query = "SELECT COUNT(*) AS total_theloai FROM theloai;";
+$tacgia_query = "SELECT COUNT(*) AS total_tacgia FROM tacgia;";
+$baiviet_query = "SELECT COUNT(*) AS total_baiviet FROM baiviet;";
+
+$result_theloai = $conn->query($theloai_query);
+$result_tacgia = $conn->query($tacgia_query);
+$result_baiviet = $conn->query($baiviet_query);
+
+$row_theloai = $result_theloai->fetch_assoc();
+$row_tacgia = $result_tacgia->fetch_assoc();
+$row_baiviet = $result_baiviet->fetch_assoc();
+
+$total_theloai = $row_theloai['total_theloai'];
+$total_tacgia = $row_tacgia['total_tacgia'];
+$total_baiviet = $row_baiviet['total_baiviet'];
+
+// Sử dụng dữ liệu lấy được ở đây
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,9 +88,10 @@
                         <h5 class="card-title text-center">
                             <a href="" class="text-decoration-none">Thể loại</a>
                         </h5>
+                        
 
                         <h5 class="h1 text-center">
-                            10
+                        <?php echo $total_theloai; ?>
                         </h5>
                     </div>
                 </div>
@@ -81,7 +105,7 @@
                         </h5>
 
                         <h5 class="h1 text-center">
-                            20
+                        <?php echo $total_tacgia; ?>
                         </h5>
                     </div>
                 </div>
@@ -95,7 +119,7 @@
                         </h5>
 
                         <h5 class="h1 text-center">
-                            110
+                        <?php echo $total_baiviet; ?>
                         </h5>
                     </div>
                 </div>

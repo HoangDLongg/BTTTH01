@@ -99,6 +99,8 @@ $result = $conn->query($sql);
                     echo ' <td>
                                 <a href="delete_article.php?id='. $row["ma_bviet"] . '"><i class="fa-solid fa-trash"></i></a>
                             </td>'; // Xóa
+                
+                    
                     echo '</tr>';
                 }
             } else {
@@ -112,6 +114,14 @@ $result = $conn->query($sql);
         ?>
         
                 </table>
+                <table class="table">
+                <?php 
+        if(isset($_GET['insert_msg'])){
+            echo "<h6>" . $_GET['insert_msg'] . "</h6>";
+        }
+        ?>
+    </table>
+
             </div>
             <?php 
         if(isset($_GET['delete_msg'])){

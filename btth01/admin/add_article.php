@@ -11,7 +11,7 @@
     
     $sql = "INSERT INTO baiviet (tieude, ten_bhat,ma_tloai,tomtat,noidung,ma_tgia,ngayviet) Values ('$tieude','$ten_bhat','$ma_tloai','$tomtat','$noidung','$ma_tgia','$ngayviet')";
     if($conn->query($sql)===TRUE){
-        echo "Done";
+        header('location:article.php?insert_msg=You data has been added successfully');
     }
     else{
         echo"Eror" . $sql . "<br>" . $conn->error;
